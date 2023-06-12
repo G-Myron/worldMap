@@ -15,22 +15,24 @@ paths.forEach( path => {
     countries[path.name]? countries[path.name].push(path) : countries[path.name] = [path];
 
 
-    path.addEventListener("mouseenter", e=> {
+    path.onmouseenter = e=> {
         screen.textContent = path.name;
         // if ( !path.clicked )
             applyToCountry(path.name, cntryPath => cntryPath.setAttribute('fill', hoverColor));
-    });
-    path.addEventListener("mouseleave", e=> {
-        if ( !path.clicked )
-            applyToCountry(path.name, cntryPath => cntryPath.removeAttribute('fill'));
-        else
+    };
+    path.onmouseleave = e=> {
+        !path.clicked?
+            applyToCountry(path.name, cntryPath => cntryPath.removeAttribute('fill')):
             applyToCountry(path.name, cntryPath => cntryPath.setAttribute('fill', markedColor));
-    });
+    };
 
-    path.addEventListener("click", e=> {
-        applyToCountry(path.name, cntryPath => cntryPath.setAttribute('fill', markedColor));
-        applyToCountry(path.name, cntryPath => !cntryPath.clicked? cntryPath.clicked = true : cntryPath.clicked = false);
-    });
+    path.onclick = e=> {
+        applyToCountry(path.name, cntryPath => { cntryPath.clicked = !cntryPath.clicked;
+            cntryPath.clicked?
+                cntryPath.setAttribute('fill', markedColor):
+                cntryPath.setAttribute('fill', hoverColor);
+        });
+    };
 });
 
 
